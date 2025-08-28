@@ -44,6 +44,11 @@ function analyzeSalesData(data, options) {
     throw new Error("Некорректные входные данные");
   }
 
+  if (!data || !Array.isArray(data.purchase_records) || data.purchase_records.length === 0) {
+    throw new Error("Некорректные входные данные");
+  }
+
+
   // Проверка наличия опций
 
   if (typeof options !== "object") {
@@ -93,15 +98,14 @@ function analyzeSalesData(data, options) {
   );
 
   // Расчет выручки и прибыли для каждого продавца
-
   data.purchase_records.forEach((record) => {
     const seller = sellerIndex[record.seller_id];
     // Увеличить количество продаж
     seller.sales_count += 1;
     // Увеличить общую сумму всех продаж
     seller.revenue += record.total_amount;
-    // Расчёт прибыли для каждого товара
 
+    // Расчёт прибыли для каждого товара
     record.items.forEach((item) => {
       const product = productIndex[item.sku];
 
